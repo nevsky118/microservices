@@ -10,11 +10,11 @@
   <version>1.0-SNAPSHOT</version>
   <modules>
     <module>customer</module>
-      <module>fraud</module>
+    <module>fraud</module>
     <module>eureka-server</module>
-      <module>clients</module>
-      <module>notification</module>
-      <module>apigw</module>
+    <module>clients</module>
+    <module>notification</module>
+    <module>apigw</module>
     <module>amqp</module>
   </modules>
 
@@ -23,9 +23,10 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>18</maven.compiler.source>
+    <maven.compiler.target>18</maven.compiler.target>
     <spring.boot.maven.plugin.version>2.6.6</spring.boot.maven.plugin.version>
+    <image>kringel/${project.artifactId}:${project.version}</image>
   </properties>
 
   <dependencyManagement>
@@ -73,6 +74,39 @@
             <execution>
               <goals>
                 <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>com.google.cloud.tools</groupId>
+          <artifactId>jib-maven-plugin</artifactId>
+          <version>3.2.1</version>
+          <configuration>
+            <from>
+              <image>eclipse-temurin:latest</image>
+              <platforms>
+                <platform>
+                  <architecture>arm64</architecture>
+                  <os>linux</os>
+                </platform>
+                <platform>
+                  <architecture>amd64</architecture>
+                  <os>linux</os>
+                </platform>
+              </platforms>
+            </from>
+            <to>
+              <tags>
+                <tag>latest</tag>
+              </tags>
+            </to>
+          </configuration>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>build</goal>
               </goals>
             </execution>
           </executions>
